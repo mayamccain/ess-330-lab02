@@ -4,23 +4,76 @@ format: html
 editor: visual
 ---
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## 
 
 ```{r}
-1 + 1
+library(dplyr)
+library(tidyverse)
 ```
-
-You can add options to executable code like this
+#Question 1: Read in the Minnesota tree growth dataset. Use glimpse to understand the structure and names of the dataset. Decribe the structure and what you see in the dataset?
 
 ```{r}
-#| echo: false
-2 * 2
+glimpse(tree_dat)
+```
+#There are 8 columns and 131,386 rows. There is data for tree ID, stand ID, stand, year, species, age, inc, and rad_ib.
+
+#Question 2: How many reocrds have been made in stand 1?
+```{r}
+tree_dat %>%
+  filter(standID == 1) %>%
+  tally()
+tree_count1 <- tree_dat %>%
+  filter((standID == 1))
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+#Question 3: How many records of the Abies balsamea and Pinus strobus species have been made?
+```{r}
+tree_dat %>%
+  filter(species %in% c("ABBA", "PIST")) %>%
+  count(species)
+```
+
+
+#Question 4: How many trees are older then 200 years old in the last year of the dataset?
+```{r}
+last_year <- max(tree_dat$year, na.rm = TRUE)
+
+tree_dat %>%
+  filter(year == last_year, age > 200) %>%
+  tally()
+```
+
+
+#Question 5: What is the oldest tree in the dataset found using slice_max?
+```{r}
+tree_dat %>%
+  slice_max(order_by = age, n = 1)
+```
+
+#Question 6: Find the oldest 5 trees recorded in 2001. Use the help docs to understand optional parameters
+```{r}
+tree_dat %>%
+  filter((year == 2001)) %>%
+  slice_max(order_by = age, n = 5)
+
+```
+
+
+#Question 7: Using slice_sample, how many trees are in a 30% sample of those recorded in 2002?
+```{r}
+trees_2002 <- tree_dat %>%
+  filter(year == 2002)
+sampled_trees <- trees_2002 %>%
+  slice_sample(prop = 0.3)
+nrow(sampled_trees)
+```
+
+
+#Question 8: Filter all trees in stand 5 in 2007. Sort this subset by descending radius at breast height (rad_ib) and use slice_head() to get the top three trees. Report the tree IDs
+
+#Question 9: Reduce your full data.frame to [treeID, stand, year, and radius at breast height]. Filter to only those in stand 3 with records from 2007, and use slice_min to pull the smallest three trees meaured that year.
+
+#Question 10: Use select to remove the stand column. Use glimspe to show the dataset.
+
+#Question 11: Look at the help document for dplyr::select and examine the “Overview of selection features”. Identify an option (there are multiple) that would help select all columns with the string “ID” in the name. Using glimpse to view the remaining dataset
