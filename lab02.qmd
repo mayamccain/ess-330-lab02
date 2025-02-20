@@ -71,6 +71,14 @@ nrow(sampled_trees)
 
 
 #Question 8: Filter all trees in stand 5 in 2007. Sort this subset by descending radius at breast height (rad_ib) and use slice_head() to get the top three trees. Report the tree IDs
+```{r}
+stand05_2007 <- tree_dat %>%
+  filter(standID == 5, year == 2007) %>%
+  arrange(desc(rad_ib)) %>%
+  slice_head(n = 3) %>%
+  print(stand05_2007)
+```
+
 
 #Question 9: Reduce your full data.frame to [treeID, stand, year, and radius at breast height]. Filter to only those in stand 3 with records from 2007, and use slice_min to pull the smallest three trees meaured that year.
 
