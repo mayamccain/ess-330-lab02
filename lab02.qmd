@@ -177,26 +177,42 @@ print(tree_class_count)
 ```{r}
 DBH_stats <- tree_dat %>%
   filter(year == 2007) %>%
-  summarize(mean_DBH = mean(DBH_cm, na.rm = TRUE), sd_DBH = sd(DBH_cm, ma.rm = TRUE))
-```
-```{r}
-DBH_stats <- tree_dat %>%
+  summarise(mean_DBH = mean(DBH_cm, na.rm = TRUE), sd_DBH = sd(DBH_cm, na.rm = TRUE))
+
 print(DBH_stats)
 ```
-
+#The mean is the average DBH of the trees sampled in 2007. The standard deviation shows the variation of the data of the trees sampled in 2007. 
 
 
 #Question 18: Compute the per species mean tree age using only those ages recorded in 2003. Identify the three species with the oldest mean age.
 ```{r}
-age_2003 <- tree_dat %>%
+species_age_2003 <- tree_dat %>%
+  filter(year == 2003) %>%
+  group_by(species) %>%
+  summarise(mean_species_age = mean(age, na.rm = TRUE)) %>%
+  arrange(desc(mean_species_age))
+print(species_age_2003)  
 ```
 
 
 #Question 19: In a single summarize call, find the number of unique years with records in the data set along with the first and last year recorded?
+```{r}
+tree_dat %>%
+  summarize(n_distinct(year), min(year, na.rm = TRUE), max(year, na.rm = TRUE))
+```
+
 
 #Question 20: Determine the stands with the largest number of unique years recorded. Report all stands with largest (or tied with the largest) temporal record.
+```{r}
+tree_dat %>%
+  group_by(stand) %>%
+  summarize(unique_stands = n_distinct(year)) %>%
+  filter(unique_stands == max(unique_stands))
+print(unique_stands)
+```
 
-#Use a combination of dplyr verbs to compute these values and report the 3 species with the fastest growth, and the 3 species with the slowest growth. (** You will need to use either lag() or diff() in your compuation. You can learn more about each in the Help pages)
 
-#Lastly, find and include an image of the fastest growing species. Add the image to your images directory.
+#Question 21: Use a combination of dplyr verbs to compute these values and report the 3 species with the fastest growth, and the 3 species with the slowest growth. (** You will need to use either lag() or diff() in your compuation. You can learn more about each in the Help pages)
+
+#Question 22: Lastly, find and include an image of the fastest growing species. Add the image to your images directory.
 
