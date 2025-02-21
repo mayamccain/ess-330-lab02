@@ -1,5 +1,6 @@
 ---
-title: "lab02"
+title: "Lab02"
+author: "Maya McCain"
 format: html
 editor: visual
 ---
@@ -213,6 +214,26 @@ print(unique_stands)
 
 
 #Question 21: Use a combination of dplyr verbs to compute these values and report the 3 species with the fastest growth, and the 3 species with the slowest growth. (** You will need to use either lag() or diff() in your compuation. You can learn more about each in the Help pages)
+```{r}
+fastest_and_slowest_growth <- tree_dat %>%
+  group_by(treeID) %>%
+  arrange(year) %>%
+  mutate(growth = DBH_cm - lag(DBH_cm),
+  total_years = n()) %>%
+  filter(!is.na(growth), total_years > 10) %>%
+  ungroup() %>%
+  group_by(species) %>%
+  summarize(mean_growth = mean(growth))
+  
+slice_max(fastest_and_slowest_growth, mean_growth, n = 3)
+```
+```{r}
+slice_min(fastest_and_slowest_growth, mean_growth, n = 3)
+```
 
 #Question 22: Lastly, find and include an image of the fastest growing species. Add the image to your images directory.
+
+---
+image: pinus_resinosa
+---
 
