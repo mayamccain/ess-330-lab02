@@ -1,5 +1,5 @@
 ---
-title: "Lab02"
+title: "Lab 02"
 author: "Maya McCain"
 format: html
 editor: visual
@@ -14,6 +14,7 @@ library(tidyverse)
 #Question 1: Read in the Minnesota tree growth dataset. Use glimpse to understand the structure and names of the dataset. Decribe the structure and what you see in the dataset?
 
 ```{r}
+tree_dat <- read.csv('/Users/mayamccain/github/ess-330-lab02/data/doi_10_5061_dryad_18pm5__v20170130/Itter_et_al_EAP16-0589.R1/tree_dat.csv')
 glimpse(tree_dat)
 ```
 #There are 8 columns and 131,386 rows. There is data for tree ID, stand ID, stand, year, species, age, inc, and rad_ib.
@@ -76,8 +77,8 @@ nrow(sampled_trees)
 stand05_2007 <- tree_dat %>%
   filter(standID == 5, year == 2007) %>%
   arrange(desc(rad_ib)) %>%
-  slice_head(n = 3) %>%
-  print(stand05_2007)
+  slice_head(n = 3)
+print(stand05_2007)
 ```
 
 #The top three tree IDs are 128, 157, and 135. 
@@ -209,7 +210,6 @@ tree_dat %>%
   group_by(stand) %>%
   summarize(unique_stands = n_distinct(year)) %>%
   filter(unique_stands == max(unique_stands))
-print(unique_stands)
 ```
 
 
@@ -233,7 +233,6 @@ slice_min(fastest_and_slowest_growth, mean_growth, n = 3)
 
 #Question 22: Lastly, find and include an image of the fastest growing species. Add the image to your images directory.
 
----
 image: pinus_resinosa
----
+
 
